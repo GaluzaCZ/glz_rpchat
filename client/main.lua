@@ -6,7 +6,7 @@ AddEventHandler('sendMe', function(playerId, title, message, color)
 	local sourcePed, targetPed = PlayerPedId(), GetPlayerPed(target)
 	local sourceCoords, targetCoords = GetEntityCoords(sourcePed), GetEntityCoords(targetPed)
 
-	if target == source or GetDistanceBetweenCoords(sourceCoords, targetCoords, true) < 20 then
+	if target ~= -1 and (target == source or GetDistanceBetweenCoords(sourceCoords, targetCoords, true) < 20) then
 		TriggerEvent('chat:addMessage', {
             template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(202, 83, 220, 0.6); border-radius: 10px;"><i class="fas fa-user-circle"></i> {0}: {1}</div>',
             args = { title, message }
@@ -23,7 +23,7 @@ AddEventHandler('sendDo', function(playerId, title, message, color)
 	local sourcePed, targetPed = PlayerPedId(), GetPlayerPed(target)
 	local sourceCoords, targetCoords = GetEntityCoords(sourcePed), GetEntityCoords(targetPed)
 
-	if target == source or GetDistanceBetweenCoords(sourceCoords, targetCoords, true) < 20 then
+	if target ~= -1 and (target == source or GetDistanceBetweenCoords(sourceCoords, targetCoords, true) < 20) then
 		TriggerEvent('chat:addMessage', {
       	    template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(220, 173, 17, 0.6); border-radius: 10px;"><i class="fas fa-users"></i> {0}: {1}</div>',
             args = { title, message }
@@ -38,7 +38,7 @@ AddEventHandler('LocalOOC', function(playerId, title, message, color)
 	local sourcePed, targetPed = PlayerPedId(), GetPlayerPed(target)
 	local sourceCoords, targetCoords = GetEntityCoords(sourcePed), GetEntityCoords(targetPed)
 
-	if target == PlayerId() or GetDistanceBetweenCoords(sourceCoords, targetCoords, true) < 20 then
+	if target ~= -1 and (target == PlayerId() or GetDistanceBetweenCoords(sourceCoords, targetCoords, true) < 20) then
 		TriggerEvent('chat:addMessage', {
     	    template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(99, 99, 99, 0.3); border-radius: 10px;"><i class="fas fa-street-view"></i> {0}: {1}</div>',
             args = { title, message }
@@ -173,8 +173,8 @@ function DisplayMe(mePlayer, text, offsetme)
             local coordsMe = GetEntityCoords(GetPlayerPed(mePlayer), false)
             local coords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist2(coordsMe, coords)
-            if dist < 500 then
-                 DrawText3Dme(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetme-1.250, text)
+            if mePlayer ~= 1 and dist < 500 then
+                DrawText3Dme(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetme-1.250, text)
             end
         end
         nbrDisplaying = nbrDisplaying - 1
@@ -185,7 +185,7 @@ function DisplayDo(mePlayer, text, offsetdo)
     local displaying = true
 
     Citizen.CreateThread(function()
-        Wait(4000)
+        Wait(5000)
         displaying = false
     end)
 
@@ -196,8 +196,8 @@ function DisplayDo(mePlayer, text, offsetdo)
             local coordsMe = GetEntityCoords(GetPlayerPed(mePlayer), false)
             local coords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist2(coordsMe, coords)
-            if dist < 500 then
-                 DrawText3Ddo(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetdo-1.250, text)
+            if mePlayer ~= 1 and dist < 500 then
+                DrawText3Ddo(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetdo-1.250, text)
             end
         end
         nbrDisplaying = nbrDisplaying - 1
@@ -219,8 +219,8 @@ function DisplayDoc(mePlayer, text, offsetdoa)
             local coordsMe = GetEntityCoords(GetPlayerPed(mePlayer), false)
             local coords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist2(coordsMe, coords)
-            if dist < 500 then
-                 DrawText3Ddo(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetdoa-1.250, text)
+            if mePlayer ~= 1 and dist < 500 then
+                DrawText3Ddo(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetdoa-1.250, text)
             end
         end
         nbrDisplaying = nbrDisplaying - 1
