@@ -173,7 +173,7 @@ function DisplayMe(mePlayer, text, offsetme)
             local coordsMe = GetEntityCoords(GetPlayerPed(mePlayer), false)
             local coords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist2(coordsMe, coords)
-            if mePlayer ~= 1 and dist < 500 then
+            if mePlayer ~= -1 and dist < 500 then
                 DrawText3Dme(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetme-1.250, text)
             end
         end
@@ -196,7 +196,7 @@ function DisplayDo(mePlayer, text, offsetdo)
             local coordsMe = GetEntityCoords(GetPlayerPed(mePlayer), false)
             local coords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist2(coordsMe, coords)
-            if mePlayer ~= 1 and dist < 500 then
+            if mePlayer ~= -1 and dist < 500 then
                 DrawText3Ddo(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetdo-1.250, text)
             end
         end
@@ -219,7 +219,7 @@ function DisplayDoc(mePlayer, text, offsetdoa)
             local coordsMe = GetEntityCoords(GetPlayerPed(mePlayer), false)
             local coords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist2(coordsMe, coords)
-            if mePlayer ~= 1 and dist < 500 then
+            if mePlayer ~= -1 and dist < 500 then
                 DrawText3Ddo(coordsMe['x'], coordsMe['y'], coordsMe['z']+offsetdoa-1.250, text)
             end
         end
