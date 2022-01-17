@@ -3,7 +3,7 @@ Simple RP stuff for chat made by GalužaCZ#8828
 ## Dependencies
 - [chat](https://github.com/GaluzaCZ/chat)
 - [es_extended](https://github.com/esx-framework/es_extended/tree/legacy)
-- [esx-legacy](https://github.com/esx-framework/esx-legacy/tree/main/%5Besx%5D/esx_identity) (if u want use RP names)
+- [esx_identity](https://github.com/esx-framework/esx-legacy/tree/main/%5Besx%5D/esx_identity) (if u want use RP names)
 ## Commands
 - **me**
 - **do**
