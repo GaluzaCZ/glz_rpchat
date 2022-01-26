@@ -7,6 +7,16 @@ AddEventHandler('chatMessage', function(source, name, message)
 	if string.sub(message, 1, string.len('/')) ~= '/' then
 		CancelEvent()
 		TriggerClientEvent('LocalOOC', -1, source, name, message, {30, 144, 255});
+	else
+		CancelEvent()
+		local args = stringsplit(message, " ")
+		args[1] = string.gsub(args[1], "/", "")
+		if not IsCommandValid(args[1]) then
+			TriggerClientEvent('chat:addMessage', source, {
+				template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(205, 0, 0, 0.9); border-radius: 10px;"><i class="fas fa-exclamation"></i>  Unknown command  <i class="fas fa-exclamation"></i></div>',
+				args = {}
+			})
+		end
 	end
 end)
 
@@ -70,7 +80,7 @@ RegisterCommand('doc', function(source, args, rawCommand)
 	local pocetOpakovani = tonumber(args[1])
 	if pocetOpakovani < 21 then
 		while counter_doc < pocetOpakovani do
-			counter_doc = counter_doc + 1 
+			counter_doc = counter_doc + 1
 			TriggerClientEvent('esx_rpchat:sendDo', -1, source, name, counter_doc .. "/" .. pocetOpakovani , { 255, 198, 0 })
 			TriggerClientEvent('3ddoc:triggerDisplay', -1, counter_doc .. "/" .. pocetOpakovani, source)
 			Citizen.Wait(2000)
@@ -167,7 +177,7 @@ RegisterCommand('police', function(source, args, rawCommand)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local toSay = table.concat(args, ' ')
 
-	if xPlayer.getJob().name == 'police' or xPlayer.getJob().name == 'sheriff' then 
+	if xPlayer.getJob().name == 'police' or xPlayer.getJob().name == 'sheriff' then
 		TriggerClientEvent('chat:addMessage', -1, {
 			template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(50, 71, 202, 0.9); border-radius: 10px;"><i class="fas fa-bullhorn"></i> Police: {0}</div>',
 			args = {toSay}
@@ -188,12 +198,12 @@ RegisterCommand('ems', function(source, args, rawCommand)
 		toSay = toSay .. args[i] .. ' ' -- Concats two strings together
 	end
 
-	if xPlayer.getJob().name == 'ambulance' then 
+	if xPlayer.getJob().name == 'ambulance' then
 		TriggerClientEvent('chat:addMessage', -1, {
 			template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(255, 0, 0, 1); border-radius: 10px;"><i class="fas fa-ambulance"></i> Ambulance: {0}</div>',
 			args = {toSay}
 		})
-	else 
+	else
 		TriggerClientEvent('chat:addMessage', source, {
 			template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(205, 0, 0, 0.9); border-radius: 10px;"><i class="fas fa-exclamation"></i>  '.._U('not_ems')..'  <i class="fas fa-exclamation"></i></div>',
 			args = {}
@@ -201,13 +211,52 @@ RegisterCommand('ems', function(source, args, rawCommand)
 	end
 end, false)
 
--- Get Character name
-function GetCharacterName(source)
+-- Job
+RegisterCommand('job', function(source)
 	local xPlayer = ESX.GetPlayerFromId(source)
 
+	TriggerClientEvent('chat:addMessage', source, {
+		template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(0, 157, 255, 0.6); border-radius: 10px;"><i class="fas fa-user-secret"></i> {0} {1}</div>',
+		args = { xPlayer.job.label, xPlayer.job.grade_label }
+	})
+end, false)
+
+RegisterCommand('money', function(source)
+	local xPlayer = ESX.GetPlayerFromId(source)
+
+	TriggerClientEvent('chat:addMessage', source, {
+		template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(0, 157, 255, 0.6); border-radius: 10px;"><i class="fas fa-wallet"></i>: {0}<br><i class="fas fa-university"></i>: {1}</div>',
+		args = { ESX.Math.GroupDigits(xPlayer.getMoney()), ESX.Math.GroupDigits(xPlayer.getAccount("bank").money) }
+	})
+end, false)
+
+-- Get Character name
+function GetCharacterName(source)
 	if Config.ESX then
+		local xPlayer = ESX.GetPlayerFromId(source)
 		return xPlayer.getName()
 	else
 		return GetPlayerName(source)
 	end
+end
+
+function IsCommandValid(cmd)
+	for i, v in ipairs(GetRegisteredCommands()) do
+		if v.name == cmd then
+			return true
+		end
+	end
+	return false
+end
+
+function stringsplit(inputstr, sep)
+	if sep == nil then
+		sep = "%s"
+	end
+	local t={} ; i=1
+	for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+		t[i] = str
+		i = i + 1
+	end
+	return t
 end
